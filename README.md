@@ -337,42 +337,6 @@ docker-compose logs -f
 docker-compose down
 ```
 
-### Production Deployment
-
-1. **Backend**: Deploy to AWS EC2, Google Cloud Run, or similar
-2. **Frontend**: Deploy to Vercel, Netlify, or S3 + CloudFront
-3. **MongoDB**: Use MongoDB Atlas for managed database
-4. **GraphDB**: Deploy on dedicated server or use Ontotext Cloud
-
-## Troubleshooting
-
-### Backend won't start
-- Ensure MongoDB is running
-- Check `.env` configuration
-- Verify Python version (3.9+)
-
-### Frontend can't connect to backend
-- Check `VITE_API_URL` in `.env.local`
-- Verify backend is running on correct port
-- Check CORS settings in backend `.env`
-
-### No data showing
-- Run seed script: `python ops/seed.py`
-- Check MongoDB connection
-- Verify data in MongoDB collections
-
-### Docker issues
-- Run `docker-compose down -v` to reset volumes
-- Rebuild: `docker-compose up --build`
-- Check logs: `docker-compose logs backend`
-
-## Team
-
-- **Rahul Marathervar** - Data & Ontology, Infrastructure
-- **Balaji Radhakrishnan Padmanabhan** - Backend & Infrastructure
-- **Akshat Aggarwal** - Backend & Data
-- **Yogesh Sangtani** - Frontend & Data
-- **Charani Tirumalareddy** - Data & Ontology
 
 ## License
 
