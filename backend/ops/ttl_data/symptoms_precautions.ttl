@@ -1,0 +1,29 @@
+@prefix : <http://example.org/healthnav#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix schema: <http://schema.org/> .
+
+# Precautions
+
+:ChestPainPrecaution a :Precaution ;
+    :name "If chest pain is severe or accompanied by shortness of breath, call emergency services immediately." .
+
+:ChestPain :recommendedPrecaution :ChestPainPrecaution .
+
+:ShortnessOfBreathPrecaution a :Precaution ;
+    :name "Seek immediate medical attention if experiencing sudden or severe shortness of breath." .
+
+:ShortnessOfBreath :recommendedPrecaution :ShortnessOfBreathPrecaution .
+
+:SevereHeadachePrecaution a :Precaution ;
+    :name "If headache is sudden and severe, especially with fever or stiff neck, seek emergency care." .
+
+:SevereHeadache :recommendedPrecaution :SevereHeadachePrecaution .
+
+:FatiguePrecaution a :Precaution ;
+    :name "Persistent fatigue may indicate underlying conditions. Consult a healthcare provider if it lasts more than 2 weeks." .
+
+:Fatigue :recommendedPrecaution :FatiguePrecaution .
+

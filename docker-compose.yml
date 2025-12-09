@@ -1,0 +1,92 @@
+version: '3.8'
+
+services:
+  # Ontotext GraphDB - Knowledge Graph (Source of Truth)
+  graphdb:
+    image: ontotext/graphdb:10.6.3-free
+    container_name: healthnav-graphdb
+    restart: unless-stopped
+    ports:
+      - "7200:7200"
+    environment:
+      - GDB_JAVA_OPTS=-Xmx2g -Xms1g
+    volumes:
+      - graphdb-data:/opt/graphdb/home
+    networks:
+      - healthnav-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:7200/rest/repositories"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # MongoDB Database (Cache Only)
+  mongodb:
+    image: mongo:7.0
+    container_name: healthnav-mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: healthnav
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - healthnav-network
+
+  # Backend API
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: healthnav-backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - MONGODB_URL=mongodb://mongodb:27017
+      - MONGODB_DB_NAME=healthnav
+      - GRAPHDB_URL=http://graphdb:7200
+      - GRAPHDB_REPOSITORY=healthnav
+      - CORS_ORIGINS=["http://localhost:5173","http://localhost:3000"]
+      - DEBUG=true
+      - ENABLE_CACHING=true
+    depends_on:
+      graphdb:
+        condition: service_healthy
+      mongodb:
+        condition: service_started
+    networks:
+      - healthnav-network
+    volumes:
+      - ./backend:/app
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+  # Frontend (Optional - can be run separately with Vite)
+  # Uncomment if you want to run frontend in Docker
+  # frontend:
+  #   build:
+  #     context: ./healthnav-ui-kit
+  #     dockerfile: Dockerfile
+  #   container_name: healthnav-frontend
+  #   restart: unless-stopped
+  #   ports:
+  #     - "5173:5173"
+  #   environment:
+  #     - VITE_API_URL=http://localhost:8000
+  #   depends_on:
+  #     - backend
+  #   networks:
+  #     - healthnav-network
+  #   volumes:
+  #     - ./healthnav-ui-kit:/app
+  #     - /app/node_modules
+  #   command: npm run dev -- --host
+
+networks:
+  healthnav-network:
+    driver: bridge
+
+volumes:
+  mongodb_data:
+  graphdb_data:

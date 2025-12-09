@@ -1,0 +1,75 @@
+@prefix : <http://example.org/healthnav#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix schema: <http://schema.org/> .
+
+# Symptoms
+
+:ChestPain a :Symptom ;
+    :name "Chest Pain" .
+
+:Coughing a :Symptom ;
+    :name "Coughing" .
+
+:Dizziness a :Symptom ;
+    :name "Dizziness" .
+
+:ExcessiveThirst a :Symptom ;
+    :name "Excessive Thirst" .
+
+:Fatigue a :Symptom ;
+    :name "Fatigue" .
+
+:FrequentUrination a :Symptom ;
+    :name "Frequent Urination" .
+
+:Headache a :Symptom ;
+    :name "Headache" .
+
+:LightSensitivity a :Symptom ;
+    :name "Light Sensitivity" .
+
+:Nausea a :Symptom ;
+    :name "Nausea" .
+
+:SevereHeadache a :Symptom ;
+    :name "Severe Headache" .
+
+:ShortnessOfBreath a :Symptom ;
+    :name "Shortness Of Breath" .
+
+:Wheezing a :Symptom ;
+    :name "Wheezing" .
+
+# Medical Conditions
+
+:CAD a :MedicalCondition ;
+    :name "Coronary artery disease" ;
+    :hasSymptom :ChestPain ;
+    :hasSymptom :ShortnessOfBreath .
+
+:Diabetes a :MedicalCondition ;
+    :name "Diabetes Mellitus Type 2" ;
+    :hasSymptom :Fatigue ;
+    :hasSymptom :ExcessiveThirst ;
+    :hasSymptom :FrequentUrination .
+
+:Hypertension a :MedicalCondition ;
+    :name "Hypertension" ;
+    :hasSymptom :Headache ;
+    :hasSymptom :Dizziness .
+
+:Asthma a :MedicalCondition ;
+    :name "Asthma" ;
+    :hasSymptom :Wheezing ;
+    :hasSymptom :ShortnessOfBreath ;
+    :hasSymptom :Coughing .
+
+:Migraine a :MedicalCondition ;
+    :name "Migraine" ;
+    :hasSymptom :SevereHeadache ;
+    :hasSymptom :Nausea ;
+    :hasSymptom :LightSensitivity .
+

@@ -1,0 +1,234 @@
+@prefix : <http://example.org/healthnav#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix schema: <http://schema.org/> .
+
+# Pharmacies
+
+:CVSPharmacy0 a :Pharmacy ;
+    :name "CVS Pharmacy #1" ;
+    :locatedAt :CVSPharmacy0_Address .
+
+:CVSPharmacy0_Address a :Address ;
+    :addressLine "5323 Central Ave" ;
+    :city "Phoenix" ;
+    :state "AZ" ;
+    :postalCode "85014" ;
+    :hasGeo :CVSPharmacy0_Geo .
+
+:CVSPharmacy0_Geo a :GeoLocation ;
+    :latitude "33.471475"^^xsd:decimal ;
+    :longitude "-112.028293"^^xsd:decimal .
+
+:RiteAidPharmacy1 a :Pharmacy ;
+    :name "RiteAid Pharmacy #2" ;
+    :locatedAt :RiteAidPharmacy1_Address .
+
+:RiteAidPharmacy1_Address a :Address ;
+    :addressLine "4745 Central Ave" ;
+    :city "Scottsdale" ;
+    :state "AZ" ;
+    :postalCode "85030" ;
+    :hasGeo :RiteAidPharmacy1_Geo .
+
+:RiteAidPharmacy1_Geo a :GeoLocation ;
+    :latitude "33.426864"^^xsd:decimal ;
+    :longitude "-112.102994"^^xsd:decimal .
+
+:RiteAidPharmacy2 a :Pharmacy ;
+    :name "RiteAid Pharmacy #3" ;
+    :locatedAt :RiteAidPharmacy2_Address .
+
+:RiteAidPharmacy2_Address a :Address ;
+    :addressLine "5149 Central Ave" ;
+    :city "Tempe" ;
+    :state "AZ" ;
+    :postalCode "85051" ;
+    :hasGeo :RiteAidPharmacy2_Geo .
+
+:RiteAidPharmacy2_Geo a :GeoLocation ;
+    :latitude "33.493684"^^xsd:decimal ;
+    :longitude "-112.065253"^^xsd:decimal .
+
+:WalgreensPharmacy3 a :Pharmacy ;
+    :name "Walgreens Pharmacy #4" ;
+    :locatedAt :WalgreensPharmacy3_Address .
+
+:WalgreensPharmacy3_Address a :Address ;
+    :addressLine "2525 McDowell Rd" ;
+    :city "Phoenix" ;
+    :state "AZ" ;
+    :postalCode "85051" ;
+    :hasGeo :WalgreensPharmacy3_Geo .
+
+:WalgreensPharmacy3_Geo a :GeoLocation ;
+    :latitude "33.491129"^^xsd:decimal ;
+    :longitude "-112.052062"^^xsd:decimal .
+
+:RiteAidPharmacy4 a :Pharmacy ;
+    :name "RiteAid Pharmacy #5" ;
+    :locatedAt :RiteAidPharmacy4_Address .
+
+:RiteAidPharmacy4_Address a :Address ;
+    :addressLine "4200 Central Ave" ;
+    :city "Scottsdale" ;
+    :state "AZ" ;
+    :postalCode "85065" ;
+    :hasGeo :RiteAidPharmacy4_Geo .
+
+:RiteAidPharmacy4_Geo a :GeoLocation ;
+    :latitude "33.442285"^^xsd:decimal ;
+    :longitude "-112.067642"^^xsd:decimal .
+
+:RiteAidPharmacy5 a :Pharmacy ;
+    :name "RiteAid Pharmacy #6" ;
+    :locatedAt :RiteAidPharmacy5_Address .
+
+:RiteAidPharmacy5_Address a :Address ;
+    :addressLine "6435 McDowell Rd" ;
+    :city "Scottsdale" ;
+    :state "AZ" ;
+    :postalCode "85096" ;
+    :hasGeo :RiteAidPharmacy5_Geo .
+
+:RiteAidPharmacy5_Geo a :GeoLocation ;
+    :latitude "33.471941"^^xsd:decimal ;
+    :longitude "-112.114113"^^xsd:decimal .
+
+:WalgreensPharmacy6 a :Pharmacy ;
+    :name "Walgreens Pharmacy #7" ;
+    :locatedAt :WalgreensPharmacy6_Address .
+
+:WalgreensPharmacy6_Address a :Address ;
+    :addressLine "3043 McDowell Rd" ;
+    :city "Phoenix" ;
+    :state "AZ" ;
+    :postalCode "85020" ;
+    :hasGeo :WalgreensPharmacy6_Geo .
+
+:WalgreensPharmacy6_Geo a :GeoLocation ;
+    :latitude "33.402148"^^xsd:decimal ;
+    :longitude "-112.078232"^^xsd:decimal .
+
+:WalgreensPharmacy7 a :Pharmacy ;
+    :name "Walgreens Pharmacy #8" ;
+    :locatedAt :WalgreensPharmacy7_Address .
+
+:WalgreensPharmacy7_Address a :Address ;
+    :addressLine "2674 Main St" ;
+    :city "Scottsdale" ;
+    :state "AZ" ;
+    :postalCode "85050" ;
+    :hasGeo :WalgreensPharmacy7_Geo .
+
+:WalgreensPharmacy7_Geo a :GeoLocation ;
+    :latitude "33.420518"^^xsd:decimal ;
+    :longitude "-112.060645"^^xsd:decimal .
+
+:CVSPharmacy8 a :Pharmacy ;
+    :name "CVS Pharmacy #9" ;
+    :locatedAt :CVSPharmacy8_Address .
+
+:CVSPharmacy8_Address a :Address ;
+    :addressLine "1914 McDowell Rd" ;
+    :city "Phoenix" ;
+    :state "AZ" ;
+    :postalCode "85091" ;
+    :hasGeo :CVSPharmacy8_Geo .
+
+:CVSPharmacy8_Geo a :GeoLocation ;
+    :latitude "33.455246"^^xsd:decimal ;
+    :longitude "-112.034966"^^xsd:decimal .
+
+:RiteAidPharmacy9 a :Pharmacy ;
+    :name "RiteAid Pharmacy #10" ;
+    :locatedAt :RiteAidPharmacy9_Address .
+
+:RiteAidPharmacy9_Address a :Address ;
+    :addressLine "9720 McDowell Rd" ;
+    :city "Tempe" ;
+    :state "AZ" ;
+    :postalCode "85019" ;
+    :hasGeo :RiteAidPharmacy9_Geo .
+
+:RiteAidPharmacy9_Geo a :GeoLocation ;
+    :latitude "33.492300"^^xsd:decimal ;
+    :longitude "-112.071360"^^xsd:decimal .
+
+:CVSPharmacy10 a :Pharmacy ;
+    :name "CVS Pharmacy #11" ;
+    :locatedAt :CVSPharmacy10_Address .
+
+:CVSPharmacy10_Address a :Address ;
+    :addressLine "5554 Central Ave" ;
+    :city "Scottsdale" ;
+    :state "AZ" ;
+    :postalCode "85009" ;
+    :hasGeo :CVSPharmacy10_Geo .
+
+:CVSPharmacy10_Geo a :GeoLocation ;
+    :latitude "33.472626"^^xsd:decimal ;
+    :longitude "-112.094112"^^xsd:decimal .
+
+:WalgreensPharmacy11 a :Pharmacy ;
+    :name "Walgreens Pharmacy #12" ;
+    :locatedAt :WalgreensPharmacy11_Address .
+
+:WalgreensPharmacy11_Address a :Address ;
+    :addressLine "100 Central Ave" ;
+    :city "Phoenix" ;
+    :state "AZ" ;
+    :postalCode "85010" ;
+    :hasGeo :WalgreensPharmacy11_Geo .
+
+:WalgreensPharmacy11_Geo a :GeoLocation ;
+    :latitude "33.464569"^^xsd:decimal ;
+    :longitude "-112.097828"^^xsd:decimal .
+
+:WalgreensPharmacy12 a :Pharmacy ;
+    :name "Walgreens Pharmacy #13" ;
+    :locatedAt :WalgreensPharmacy12_Address .
+
+:WalgreensPharmacy12_Address a :Address ;
+    :addressLine "1443 Main St" ;
+    :city "Phoenix" ;
+    :state "AZ" ;
+    :postalCode "85041" ;
+    :hasGeo :WalgreensPharmacy12_Geo .
+
+:WalgreensPharmacy12_Geo a :GeoLocation ;
+    :latitude "33.423829"^^xsd:decimal ;
+    :longitude "-112.120185"^^xsd:decimal .
+
+:RiteAidPharmacy13 a :Pharmacy ;
+    :name "RiteAid Pharmacy #14" ;
+    :locatedAt :RiteAidPharmacy13_Address .
+
+:RiteAidPharmacy13_Address a :Address ;
+    :addressLine "8821 Central Ave" ;
+    :city "Tempe" ;
+    :state "AZ" ;
+    :postalCode "85055" ;
+    :hasGeo :RiteAidPharmacy13_Geo .
+
+:RiteAidPharmacy13_Geo a :GeoLocation ;
+    :latitude "33.399693"^^xsd:decimal ;
+    :longitude "-112.075995"^^xsd:decimal .
+
+:WalgreensPharmacy14 a :Pharmacy ;
+    :name "Walgreens Pharmacy #15" ;
+    :locatedAt :WalgreensPharmacy14_Address .
+
+:WalgreensPharmacy14_Address a :Address ;
+    :addressLine "7815 McDowell Rd" ;
+    :city "Scottsdale" ;
+    :state "AZ" ;
+    :postalCode "85074" ;
+    :hasGeo :WalgreensPharmacy14_Geo .
+
+:WalgreensPharmacy14_Geo a :GeoLocation ;
+    :latitude "33.465998"^^xsd:decimal ;
+    :longitude "-112.066497"^^xsd:decimal .
+

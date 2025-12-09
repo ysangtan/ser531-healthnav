@@ -1,0 +1,258 @@
+@prefix : <http://example.org/healthnav#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix schema: <http://schema.org/> .
+
+# Physicians
+
+:DrRobertMartinez0 a :Physician ;
+    :name "Dr. Robert Martinez" ;
+    :npi "1013953256" ;
+    :hasSpecialty :Orthopedics ;
+    :hasSpecialty :Neurology ;
+    :treatsCondition :Migraine ;
+    :affiliatedWith :BannerUMCPhoenix .
+
+:DrEmilyKim1 a :Physician ;
+    :name "Dr. Emily Kim" ;
+    :npi "8098006850" ;
+    :hasSpecialty :Pulmonology ;
+    :hasSpecialty :Neurology ;
+    :treatsCondition :Asthma ;
+    :treatsCondition :Migraine ;
+    :affiliatedWith :MayoClinicPhoenix .
+
+:DrLisaFoster2 a :Physician ;
+    :name "Dr. Lisa Foster" ;
+    :npi "7650475183" ;
+    :hasSpecialty :Gastroenterology ;
+    :treatsCondition :Diabetes ;
+    :treatsCondition :CAD ;
+    :affiliatedWith :MayoClinicPhoenix .
+
+:DrMichaelKim3 a :Physician ;
+    :name "Dr. Michael Kim" ;
+    :npi "3394989479" ;
+    :hasSpecialty :CriticalCare ;
+    :hasSpecialty :AllergyAndImmunology ;
+    :treatsCondition :Hypertension ;
+    :treatsCondition :Migraine ;
+    :affiliatedWith :MayoClinicPhoenix .
+
+:DrSarahWatson4 a :Physician ;
+    :name "Dr. Sarah Watson" ;
+    :npi "7297284635" ;
+    :hasSpecialty :Hematology ;
+    :treatsCondition :Diabetes ;
+    :treatsCondition :Migraine ;
+    :affiliatedWith :BannerUMCPhoenix .
+
+:DrDavidChen5 a :Physician ;
+    :name "Dr. David Chen" ;
+    :npi "3505241063" ;
+    :hasSpecialty :Gastroenterology ;
+    :hasSpecialty :Psychiatry ;
+    :treatsCondition :Asthma ;
+    :treatsCondition :Hypertension ;
+    :affiliatedWith :MayoClinicPhoenix .
+
+:DrMichaelPark6 a :Physician ;
+    :name "Dr. Michael Park" ;
+    :npi "2011784750" ;
+    :hasSpecialty :SportsMedicine ;
+    :treatsCondition :CAD ;
+    :treatsCondition :Hypertension ;
+    :affiliatedWith :BannerUMCPhoenix .
+
+:DrEmilyChen7 a :Physician ;
+    :name "Dr. Emily Chen" ;
+    :npi "4557773093" ;
+    :hasSpecialty :Orthopedics ;
+    :treatsCondition :Diabetes ;
+    :treatsCondition :CAD ;
+    :affiliatedWith :HonorHealthScottsdale .
+
+:DrAmandaPark8 a :Physician ;
+    :name "Dr. Amanda Park" ;
+    :npi "6902599256" ;
+    :hasSpecialty :Dermatology ;
+    :treatsCondition :Hypertension ;
+    :treatsCondition :Migraine ;
+    :affiliatedWith :BannerUMCPhoenix .
+
+:DrJamesPark9 a :Physician ;
+    :name "Dr. James Park" ;
+    :npi "8480467573" ;
+    :hasSpecialty :Psychiatry ;
+    :hasSpecialty :Neurology ;
+    :treatsCondition :Migraine ;
+    :affiliatedWith :MayoClinicPhoenix .
+
+:DrSarahFoster10 a :Physician ;
+    :name "Dr. Sarah Foster" ;
+    :npi "7440964399" ;
+    :hasSpecialty :Dermatology ;
+    :treatsCondition :CAD ;
+    :treatsCondition :Asthma ;
+    :affiliatedWith :MayoClinicPhoenix .
+
+:DrLisaWatson11 a :Physician ;
+    :name "Dr. Lisa Watson" ;
+    :npi "1851030959" ;
+    :hasSpecialty :Electrophysiology ;
+    :hasSpecialty :Dermatology ;
+    :treatsCondition :Asthma ;
+    :treatsCondition :CAD ;
+    :affiliatedWith :BannerUMCPhoenix .
+
+:DrDavidFoster12 a :Physician ;
+    :name "Dr. David Foster" ;
+    :npi "3324231619" ;
+    :hasSpecialty :Endocrinology ;
+    :treatsCondition :Diabetes ;
+    :affiliatedWith :BannerUMCPhoenix .
+
+:DrAmandaChen13 a :Physician ;
+    :name "Dr. Amanda Chen" ;
+    :npi "7177377139" ;
+    :hasSpecialty :SportsMedicine ;
+    :treatsCondition :Asthma ;
+    :treatsCondition :Migraine ;
+    :affiliatedWith :HonorHealthScottsdale .
+
+:DrAmandaKim14 a :Physician ;
+    :name "Dr. Amanda Kim" ;
+    :npi "1719300879" ;
+    :hasSpecialty :Rheumatology ;
+    :treatsCondition :Migraine ;
+    :treatsCondition :CAD ;
+    :affiliatedWith :HonorHealthScottsdale .
+
+:DrSarahMartinez15 a :Physician ;
+    :name "Dr. Sarah Martinez" ;
+    :npi "4435026119" ;
+    :hasSpecialty :Psychiatry ;
+    :hasSpecialty :Pulmonology ;
+    :treatsCondition :Asthma ;
+    :affiliatedWith :MayoClinicPhoenix .
+
+:DrRobertRodriguez16 a :Physician ;
+    :name "Dr. Robert Rodriguez" ;
+    :npi "5408667123" ;
+    :hasSpecialty :Ophthalmology ;
+    :hasSpecialty :Rheumatology ;
+    :treatsCondition :CAD ;
+    :treatsCondition :Asthma ;
+    :affiliatedWith :BannerUMCPhoenix .
+
+:DrAmandaFoster17 a :Physician ;
+    :name "Dr. Amanda Foster" ;
+    :npi "3853787322" ;
+    :hasSpecialty :Rheumatology ;
+    :treatsCondition :Migraine ;
+    :treatsCondition :CAD ;
+    :affiliatedWith :MayoClinicPhoenix .
+
+:DrRobertWatson18 a :Physician ;
+    :name "Dr. Robert Watson" ;
+    :npi "3823710676" ;
+    :hasSpecialty :Ophthalmology ;
+    :hasSpecialty :VascularSurgery ;
+    :treatsCondition :Migraine ;
+    :treatsCondition :Diabetes ;
+    :affiliatedWith :BannerUMCPhoenix .
+
+:DrEmilyPark19 a :Physician ;
+    :name "Dr. Emily Park" ;
+    :npi "5594084655" ;
+    :hasSpecialty :Rheumatology ;
+    :treatsCondition :CAD ;
+    :treatsCondition :Migraine ;
+    :affiliatedWith :HonorHealthScottsdale .
+
+:DrJamesChen20 a :Physician ;
+    :name "Dr. James Chen" ;
+    :npi "7015877745" ;
+    :hasSpecialty :Endocrinology ;
+    :hasSpecialty :Orthopedics ;
+    :treatsCondition :Diabetes ;
+    :affiliatedWith :MayoClinicPhoenix .
+
+:DrJamesChen21 a :Physician ;
+    :name "Dr. James Chen" ;
+    :npi "7804669298" ;
+    :hasSpecialty :InternalMedicine ;
+    :treatsCondition :Diabetes ;
+    :treatsCondition :Hypertension ;
+    :affiliatedWith :MayoClinicPhoenix .
+
+:DrMichaelFoster22 a :Physician ;
+    :name "Dr. Michael Foster" ;
+    :npi "7168953626" ;
+    :hasSpecialty :Pulmonology ;
+    :hasSpecialty :Endocrinology ;
+    :treatsCondition :Diabetes ;
+    :treatsCondition :Asthma ;
+    :affiliatedWith :MayoClinicPhoenix .
+
+:DrJamesWatson23 a :Physician ;
+    :name "Dr. James Watson" ;
+    :npi "6871540153" ;
+    :hasSpecialty :Ophthalmology ;
+    :hasSpecialty :InfectiousDisease ;
+    :treatsCondition :Hypertension ;
+    :treatsCondition :Diabetes ;
+    :affiliatedWith :MayoClinicPhoenix .
+
+:DrRobertMartinez24 a :Physician ;
+    :name "Dr. Robert Martinez" ;
+    :npi "1506549374" ;
+    :hasSpecialty :Dermatology ;
+    :treatsCondition :Asthma ;
+    :treatsCondition :Hypertension ;
+    :affiliatedWith :MayoClinicPhoenix .
+
+:DrRobertChen25 a :Physician ;
+    :name "Dr. Robert Chen" ;
+    :npi "4527836159" ;
+    :hasSpecialty :Pulmonology ;
+    :hasSpecialty :Nephrology ;
+    :treatsCondition :Asthma ;
+    :affiliatedWith :HonorHealthScottsdale .
+
+:DrRobertThompson26 a :Physician ;
+    :name "Dr. Robert Thompson" ;
+    :npi "1998417851" ;
+    :hasSpecialty :Electrophysiology ;
+    :hasSpecialty :InfectiousDisease ;
+    :treatsCondition :Diabetes ;
+    :treatsCondition :Hypertension ;
+    :affiliatedWith :BannerUMCPhoenix .
+
+:DrAmandaMartinez27 a :Physician ;
+    :name "Dr. Amanda Martinez" ;
+    :npi "3464040905" ;
+    :hasSpecialty :Endocrinology ;
+    :hasSpecialty :Hematology ;
+    :treatsCondition :Diabetes ;
+    :affiliatedWith :MayoClinicPhoenix .
+
+:DrAmandaChen28 a :Physician ;
+    :name "Dr. Amanda Chen" ;
+    :npi "1820887969" ;
+    :hasSpecialty :Urology ;
+    :hasSpecialty :AllergyAndImmunology ;
+    :treatsCondition :Migraine ;
+    :treatsCondition :CAD ;
+    :affiliatedWith :BannerUMCPhoenix .
+
+:DrMichaelThompson29 a :Physician ;
+    :name "Dr. Michael Thompson" ;
+    :npi "6379288081" ;
+    :hasSpecialty :SportsMedicine ;
+    :treatsCondition :Asthma ;
+    :treatsCondition :CAD ;
+    :affiliatedWith :HonorHealthScottsdale .
+

@@ -1,0 +1,103 @@
+@prefix : <http://example.org/healthnav#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix schema: <http://schema.org/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+
+<http://example.org/healthnav>
+  a owl:Ontology ;
+  rdfs:label "Healthcare Navigator Ontology" ;
+  rdfs:comment "An ontology for integrating physicians, hospitals, pharmacies, conditions, symptoms, and precautions to support patient navigation." .
+
+:Agent a owl:Class .
+:Person a owl:Class ; rdfs:subClassOf :Agent ; owl:equivalentClass schema:Person .
+:Patient a owl:Class ; rdfs:subClassOf :Person .
+:Physician a owl:Class ; rdfs:subClassOf :Person ; owl:equivalentClass schema:Physician .
+:Organization a owl:Class ; owl:equivalentClass schema:Organization .
+:Hospital a owl:Class ; rdfs:subClassOf :Organization ; owl:equivalentClass schema:Hospital .
+:Pharmacy a owl:Class ; rdfs:subClassOf :Organization ; owl:equivalentClass schema:Pharmacy .
+:Specialty a owl:Class ; rdfs:subClassOf skos:Concept .
+:MedicalCondition a owl:Class ; owl:equivalentClass schema:MedicalCondition .
+:Symptom a owl:Class ; rdfs:subClassOf skos:Concept .
+:Precaution a owl:Class ; rdfs:subClassOf skos:Concept .
+:InsurancePlan a owl:Class ; owl:equivalentClass schema:HealthPlan .
+:Address a owl:Class ; owl:equivalentClass schema:PostalAddress .
+:GeoLocation a owl:Class ; owl:equivalentClass schema:GeoCoordinates .
+:Rating a owl:Class ; owl:equivalentClass schema:Rating .
+:Procedure a owl:Class ; owl:equivalentClass schema:MedicalProcedure .
+
+:hasSpecialty a owl:ObjectProperty ; rdfs:domain :Physician ; rdfs:range :Specialty .
+:treatsCondition a owl:ObjectProperty ; rdfs:domain :Physician ; rdfs:range :MedicalCondition .
+:hasSymptom a owl:ObjectProperty ; rdfs:domain :MedicalCondition ; rdfs:range :Symptom .
+:recommendedPrecaution a owl:ObjectProperty ; rdfs:domain :Symptom ; rdfs:range :Precaution .
+:affiliatedWith a owl:ObjectProperty ; rdfs:domain :Physician ; rdfs:range :Hospital .
+:worksAt a owl:ObjectProperty ; rdfs:domain :Physician ; rdfs:range :Organization .
+:locatedAt a owl:ObjectProperty ; rdfs:domain :Organization ; rdfs:range :Address .
+:hasGeo a owl:ObjectProperty ; rdfs:domain :Address ; rdfs:range :GeoLocation .
+:acceptsInsurance a owl:ObjectProperty ; rdfs:domain :Organization ; rdfs:range :InsurancePlan .
+:near a owl:ObjectProperty ; rdfs:domain :Organization ; rdfs:range :Organization .
+:hasRating a owl:ObjectProperty ; rdfs:domain :Organization ; rdfs:range :Rating .
+:performsProcedure a owl:ObjectProperty ; rdfs:domain :Physician ; rdfs:range :Procedure .
+
+:name a owl:DatatypeProperty ; rdfs:range xsd:string ; owl:equivalentProperty schema:name .
+:npi a owl:DatatypeProperty ; rdfs:domain :Physician ; rdfs:range xsd:string .
+:cmsOrgId a owl:DatatypeProperty ; rdfs:domain :Hospital ; rdfs:range xsd:string .
+:addressLine a owl:DatatypeProperty ; rdfs:domain :Address ; rdfs:range xsd:string .
+:city a owl:DatatypeProperty ; rdfs:domain :Address ; rdfs:range xsd:string .
+:state a owl:DatatypeProperty ; rdfs:domain :Address ; rdfs:range xsd:string .
+:postalCode a owl:DatatypeProperty ; rdfs:domain :Address ; rdfs:range xsd:string .
+:latitude a owl:DatatypeProperty ; rdfs:domain :GeoLocation ; rdfs:range xsd:decimal .
+:longitude a owl:DatatypeProperty ; rdfs:domain :GeoLocation ; rdfs:range xsd:decimal .
+:phone a owl:DatatypeProperty ; rdfs:domain :Organization ; rdfs:range xsd:string .
+:website a owl:DatatypeProperty ; rdfs:domain :Organization ; rdfs:range xsd:anyURI .
+:ratingValue a owl:DatatypeProperty ; rdfs:domain :Rating ; rdfs:range xsd:decimal .
+:ratingCount a owl:DatatypeProperty ; rdfs:domain :Rating ; rdfs:range xsd:integer .
+:hcahpsOverallScore a owl:DatatypeProperty ; rdfs:domain :Hospital ; rdfs:range xsd:decimal .
+
+:Cardiology a :Specialty ; :name "Cardiology" .
+:Endocrinology a :Specialty ; :name "Endocrinology" .
+:ChestPain a :Symptom ; :name "Chest pain" .
+:ShortnessOfBreath a :Symptom ; :name "Shortness of breath" .
+:CAD a :MedicalCondition ; :name "Coronary artery disease" ; :hasSymptom :ChestPain, :ShortnessOfBreath .
+:Call911 a :Precaution ; :name "If chest pain is severe or accompanied by shortness of breath, call emergency services immediately." .
+:ChestPain :recommendedPrecaution :Call911 .
+
+:BannerUMCPhoenix a :Hospital ; :name "Banner – University Medical Center Phoenix" ; :cmsOrgId "CMS123456" ; :hcahpsOverallScore "74.0"^^xsd:decimal .
+:DrSmith a :Physician ; :name "Dr. Alex Smith" ; :npi "1234567890" ; :hasSpecialty :Cardiology ; :treatsCondition :CAD ; :affiliatedWith :BannerUMCPhoenix .
+:BannerUMCPhoenix_Address a :Address ; :addressLine "1111 E McDowell Rd" ; :city "Phoenix" ; :state "AZ" ; :postalCode "85006" .
+:BannerUMCPhoenix_Geo a :GeoLocation ; :latitude "33.4665"^^xsd:decimal ; :longitude "-112.0553"^^xsd:decimal .
+:BannerUMCPhoenix :locatedAt :BannerUMCPhoenix_Address .
+:BannerUMCPhoenix_Address :hasGeo :BannerUMCPhoenix_Geo .
+
+### --- Patient-focused updates (added; existing entities untouched) ---
+
+# Object properties centered on Patient
+:hasPrimaryPhysician a owl:ObjectProperty ;
+  rdfs:domain :Patient ;
+  rdfs:range :Physician ;
+  rdfs:label "has primary physician" .
+
+:hasInsurancePlan a owl:ObjectProperty ;
+  rdfs:domain :Patient ;
+  rdfs:range :InsurancePlan ;
+  rdfs:label "has insurance plan" .
+
+:hasGeoPatient a owl:ObjectProperty ;
+  rdfs:domain :Patient ;
+  rdfs:range :GeoLocation ;
+  rdfs:label "has geo (patient)" .
+
+:experiencesSymptom a owl:ObjectProperty ;
+  rdfs:domain :Patient ;
+  rdfs:range :Symptom ;
+  rdfs:label "experiences" .
+
+# Avoid changing existing :hasSpecialty (which is for Physician).
+# For patients, model the needed specialty explicitly.
+:needsSpecialty a owl:ObjectProperty ;
+  rdfs:domain :Patient ;
+  rdfs:range :Specialty ;
+  rdfs:label "has specialty" .
+

@@ -1,0 +1,72 @@
+@prefix : <http://example.org/healthnav#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix schema: <http://schema.org/> .
+
+# Specialties
+
+:AllergyAndImmunology a :Specialty ;
+    :name "Allergy & Immunology" .
+
+:Cardiology a :Specialty ;
+    :name "Cardiology" .
+
+:CriticalCare a :Specialty ;
+    :name "Critical Care" .
+
+:Dermatology a :Specialty ;
+    :name "Dermatology" .
+
+:Electrophysiology a :Specialty ;
+    :name "Electrophysiology" .
+
+:Endocrinology a :Specialty ;
+    :name "Endocrinology" .
+
+:Gastroenterology a :Specialty ;
+    :name "Gastroenterology" .
+
+:Hematology a :Specialty ;
+    :name "Hematology" .
+
+:InfectiousDisease a :Specialty ;
+    :name "Infectious Disease" .
+
+:InternalMedicine a :Specialty ;
+    :name "Internal Medicine" .
+
+:Nephrology a :Specialty ;
+    :name "Nephrology" .
+
+:Neurology a :Specialty ;
+    :name "Neurology" .
+
+:Oncology a :Specialty ;
+    :name "Oncology" .
+
+:Ophthalmology a :Specialty ;
+    :name "Ophthalmology" .
+
+:Orthopedics a :Specialty ;
+    :name "Orthopedics" .
+
+:Psychiatry a :Specialty ;
+    :name "Psychiatry" .
+
+:Pulmonology a :Specialty ;
+    :name "Pulmonology" .
+
+:Rheumatology a :Specialty ;
+    :name "Rheumatology" .
+
+:SportsMedicine a :Specialty ;
+    :name "Sports Medicine" .
+
+:Urology a :Specialty ;
+    :name "Urology" .
+
+:VascularSurgery a :Specialty ;
+    :name "Vascular Surgery" .
+

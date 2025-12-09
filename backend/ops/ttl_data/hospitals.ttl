@@ -1,0 +1,60 @@
+@prefix : <http://example.org/healthnav#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix schema: <http://schema.org/> .
+
+# Hospitals
+
+:BannerUMCPhoenix a :Hospital ;
+    :name "Banner – University Medical Center Phoenix" ;
+    :cmsOrgId "030101" ;
+    :phone "(602) 839-2000" ;
+    :locatedAt :BannerUMCPhoenix_Address .
+
+:BannerUMCPhoenix_Address a :Address ;
+    :addressLine "1111 E McDowell Rd" ;
+    :city "Phoenix" ;
+    :state "AZ" ;
+    :postalCode "85006" ;
+    :hasGeo :BannerUMCPhoenix_Geo .
+
+:BannerUMCPhoenix_Geo a :GeoLocation ;
+    :latitude "33.4665"^^xsd:decimal ;
+    :longitude "-112.0553"^^xsd:decimal .
+
+:MayoClinicPhoenix a :Hospital ;
+    :name "Mayo Clinic Hospital Phoenix" ;
+    :cmsOrgId "030102" ;
+    :phone "(480) 515-6296" ;
+    :locatedAt :MayoClinicPhoenix_Address .
+
+:MayoClinicPhoenix_Address a :Address ;
+    :addressLine "5777 E Mayo Blvd" ;
+    :city "Phoenix" ;
+    :state "AZ" ;
+    :postalCode "85054" ;
+    :hasGeo :MayoClinicPhoenix_Geo .
+
+:MayoClinicPhoenix_Geo a :GeoLocation ;
+    :latitude "33.4484"^^xsd:decimal ;
+    :longitude "-111.9843"^^xsd:decimal .
+
+:HonorHealthScottsdale a :Hospital ;
+    :name "HonorHealth Scottsdale Osborn Medical Center" ;
+    :cmsOrgId "030103" ;
+    :phone "(480) 882-4000" ;
+    :locatedAt :HonorHealthScottsdale_Address .
+
+:HonorHealthScottsdale_Address a :Address ;
+    :addressLine "7400 E Osborn Rd" ;
+    :city "Scottsdale" ;
+    :state "AZ" ;
+    :postalCode "85251" ;
+    :hasGeo :HonorHealthScottsdale_Geo .
+
+:HonorHealthScottsdale_Geo a :GeoLocation ;
+    :latitude "33.4942"^^xsd:decimal ;
+    :longitude "-111.9261"^^xsd:decimal .
+

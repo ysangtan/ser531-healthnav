@@ -1,0 +1,140 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* HealthNav Design System
+   All colors are HSL for Tailwind compatibility
+*/
+
+@layer base {
+  :root {
+    /* Background & Foreground */
+    --background: 210 40% 98%;
+    --foreground: 222 47% 11%;
+
+    /* Card */
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+
+    /* Popover */
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+
+    /* Primary - Teal #0EA5A7 */
+    --primary: 181 84% 36%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Secondary - Indigo #4F46E5 */
+    --secondary: 244 76% 59%;
+    --secondary-foreground: 0 0% 100%;
+
+    /* Muted */
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
+
+    /* Accent */
+    --accent: 210 40% 96%;
+    --accent-foreground: 222 47% 11%;
+
+    /* Destructive - Error #DC2626 */
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* Success #16A34A */
+    --success: 142 71% 36%;
+    --success-foreground: 0 0% 100%;
+
+    /* Warning #F59E0B */
+    --warning: 38 92% 50%;
+    --warning-foreground: 222 47% 11%;
+
+    /* Info #0284C7 */
+    --info: 201 96% 40%;
+    --info-foreground: 0 0% 100%;
+
+    /* Border & Input */
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 166 84% 79%;
+
+    /* Radius */
+    --radius: 0.75rem;
+
+    /* Sidebar */
+    --sidebar-background: 210 40% 98%;
+    --sidebar-foreground: 215 16% 47%;
+    --sidebar-primary: 181 84% 36%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 210 40% 96%;
+    --sidebar-accent-foreground: 222 47% 11%;
+    --sidebar-border: 214 32% 91%;
+    --sidebar-ring: 166 84% 79%;
+
+    /* Neutrals for direct use */
+    --neutral-50: 210 40% 98%;
+    --neutral-100: 210 40% 96%;
+    --neutral-200: 214 32% 91%;
+    --neutral-300: 213 27% 84%;
+    --neutral-400: 215 20% 65%;
+    --neutral-500: 215 16% 47%;
+    --neutral-600: 215 19% 35%;
+    --neutral-700: 217 33% 17%;
+    --neutral-800: 222 47% 11%;
+    --neutral-900: 222 84% 5%;
+
+    /* HCAHPS Score Colors */
+    --hcahps-excellent: 142 71% 36%;
+    --hcahps-good: 142 50% 45%;
+    --hcahps-average: 38 92% 50%;
+    --hcahps-poor: 0 72% 51%;
+
+    /* Map Markers */
+    --marker-provider: 181 84% 36%;
+    --marker-hospital: 244 76% 59%;
+    --marker-pharmacy: 215 16% 47%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold tracking-tight;
+  }
+
+  h1 {
+    @apply text-3xl leading-tight;
+  }
+
+  h2 {
+    @apply text-2xl leading-snug;
+  }
+
+  h3 {
+    @apply text-xl leading-snug;
+  }
+}
+
+@layer utilities {
+  .gradient-primary {
+    background: linear-gradient(135deg, hsl(181 84% 36%) 0%, hsl(244 76% 59%) 100%);
+  }
+
+  .shadow-card {
+    box-shadow: 0 8px 24px -4px rgba(15, 23, 42, 0.1);
+  }
+
+  .shadow-card-hover {
+    box-shadow: 0 12px 32px -4px rgba(15, 23, 42, 0.15);
+  }
+
+  .focus-ring {
+    @apply focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2;
+  }
+}
