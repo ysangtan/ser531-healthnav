@@ -1,14 +1,13 @@
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { 
-  ArrowLeft, Star, Users, BedDouble, Siren, Phone, MapPin, 
+import {
+  ArrowLeft, Star, Users, BedDouble, Siren, Phone, MapPin,
   Clock, Pill
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 import { HcahpsBadge, getHcahpsLevel } from "@/components/ui/hcahps-badge";
-import { hospitals } from "@/data/hospitals";
-import { providers } from "@/data/providers";
-import { pharmacies } from "@/data/pharmacies";
+import { useHospitalWithFallback, useProvidersWithFallback, usePharmaciesWithFallback } from "@/lib/dataProvider";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 
@@ -17,9 +16,29 @@ export default function HospitalDetail() {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const hospital = hospitals.find((h) => h.id === id);
-  const affiliatedProviders = providers.filter((p) => p.hospitalId === id);
-  const nearbyPharmacies = pharmacies.slice(0, 4); // Demo: show first 4 pharmacies
+  const { data: hospital, isLoading: hospitalLoading, usingMockData } = useHospitalWithFallback(id || "");
+  const { data: allProviders } = useProvidersWithFallback();
+  const { data: allPharmacies } = usePharmaciesWithFallback();
+
+  const affiliatedProviders = allProviders.filter((p) => p.hospitalId === id);
+  const nearbyPharmacies = allPharmacies.slice(0, 4); // Demo: show first 4 pharmacies
+
+  if (hospitalLoading) {
+    return (
+      <div className="min-h-[calc(100vh-4rem)] p-6">
+        <Skeleton className="h-8 w-24 mb-4" />
+        <div className="flex gap-4 mb-6">
+          <Skeleton className="h-16 w-16 rounded-xl" />
+          <div className="flex-1 space-y-2">
+            <Skeleton className="h-8 w-64" />
+            <Skeleton className="h-4 w-32" />
+            <Skeleton className="h-4 w-48" />
+          </div>
+        </div>
+        <Skeleton className="h-64 w-full" />
+      </div>
+    );
+  }
 
   if (!hospital) {
     return (
@@ -94,14 +113,16 @@ export default function HospitalDetail() {
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-6">
             {/* About */}
-            <Card>
-              <CardHeader>
-                <CardTitle>About</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">{hospital.about}</p>
-              </CardContent>
-            </Card>
+            {hospital.about && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>About</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground">{hospital.about}</p>
+                </CardContent>
+              </Card>
+            )}
 
             {/* Quality Score */}
             <Card>
@@ -173,7 +194,9 @@ export default function HospitalDetail() {
                           <p className="text-sm text-muted-foreground">{provider.specialties[0]}</p>
                         </div>
                       </div>
-                      <span className="text-sm text-muted-foreground">{provider.distance} mi</span>
+                      {provider.distance !== undefined && (
+                        <span className="text-sm text-muted-foreground">{provider.distance} mi</span>
+                      )}
                     </Link>
                   ))}
                 </div>
@@ -194,15 +217,17 @@ export default function HospitalDetail() {
                 <CardTitle className="text-base">Hospital Info</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="flex items-center gap-3">
-                  <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-muted">
-                    <BedDouble className="h-4 w-4 text-muted-foreground" />
+                {hospital.bedCount !== undefined && (
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-muted">
+                      <BedDouble className="h-4 w-4 text-muted-foreground" />
+                    </div>
+                    <div>
+                      <p className="text-sm text-muted-foreground">Bed Count</p>
+                      <p className="font-medium">{hospital.bedCount} beds</p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">Bed Count</p>
-                    <p className="font-medium">{hospital.bedCount} beds</p>
-                  </div>
-                </div>
+                )}
                 <div className="flex items-center gap-3">
                   <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-muted">
                     <Users className="h-4 w-4 text-muted-foreground" />
@@ -221,15 +246,17 @@ export default function HospitalDetail() {
                     <p className="font-medium">{hospital.emergencyServices ? "Available" : "Not Available"}</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-3">
-                  <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-muted">
-                    <Phone className="h-4 w-4 text-muted-foreground" />
+                {hospital.phone && (
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-muted">
+                      <Phone className="h-4 w-4 text-muted-foreground" />
+                    </div>
+                    <div>
+                      <p className="text-sm text-muted-foreground">Phone</p>
+                      <p className="font-medium">{hospital.phone}</p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">Phone</p>
-                    <p className="font-medium">{hospital.phone}</p>
-                  </div>
-                </div>
+                )}
               </CardContent>
             </Card>
 
@@ -245,13 +272,15 @@ export default function HospitalDetail() {
                 {nearbyPharmacies.map((pharmacy) => (
                   <div key={pharmacy.id} className="flex items-center justify-between text-sm">
                     <div>
-                      <p className="font-medium text-foreground">{pharmacy.chain}</p>
+                      <p className="font-medium text-foreground">{pharmacy.chain || pharmacy.name}</p>
                       <p className="text-xs text-muted-foreground flex items-center gap-1">
                         <Clock className="h-3 w-3" />
-                        {pharmacy.is24Hour ? "24 Hours" : pharmacy.hours}
+                        {pharmacy.is24Hour ? "24 Hours" : (pharmacy.hours || "Hours vary")}
                       </p>
                     </div>
-                    <span className="text-muted-foreground">{pharmacy.distance} mi</span>
+                    {pharmacy.distance !== undefined && (
+                      <span className="text-muted-foreground">{pharmacy.distance} mi</span>
+                    )}
                   </div>
                 ))}
               </CardContent>

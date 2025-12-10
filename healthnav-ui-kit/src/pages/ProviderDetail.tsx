@@ -1,15 +1,15 @@
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { 
-  ArrowLeft, Heart, GitCompare, Phone, MapPin, Building2, 
+import {
+  ArrowLeft, Heart, GitCompare, Phone, MapPin, Building2,
   Stethoscope, FileText, Clock
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Skeleton } from "@/components/ui/skeleton";
 import { HcahpsBadge } from "@/components/ui/hcahps-badge";
 import { SpecialtyBadge } from "@/components/ui/specialty-badge";
-import { providers } from "@/data/providers";
-import { hospitals } from "@/data/hospitals";
+import { useProviderWithFallback, useHospitalWithFallback } from "@/lib/dataProvider";
 import { useToast } from "@/hooks/use-toast";
 import { useCompare } from "@/hooks/use-compare";
 import { useSaved } from "@/hooks/use-saved";
@@ -21,8 +21,25 @@ export default function ProviderDetail() {
   const { addToCompare, removeFromCompare, isInCompare } = useCompare();
   const { saveProvider, unsaveProvider, isSaved } = useSaved();
 
-  const provider = providers.find((p) => p.id === id);
-  const hospital = provider ? hospitals.find((h) => h.id === provider.hospitalId) : null;
+  const { data: provider, isLoading: providerLoading, usingMockData } = useProviderWithFallback(id || "");
+  const { data: hospital } = useHospitalWithFallback(provider?.hospitalId || "");
+
+  if (providerLoading) {
+    return (
+      <div className="min-h-[calc(100vh-4rem)] p-6">
+        <Skeleton className="h-8 w-24 mb-4" />
+        <div className="flex gap-4 mb-6">
+          <Skeleton className="h-16 w-16 rounded-full" />
+          <div className="flex-1 space-y-2">
+            <Skeleton className="h-8 w-64" />
+            <Skeleton className="h-4 w-32" />
+            <Skeleton className="h-6 w-48" />
+          </div>
+        </div>
+        <Skeleton className="h-64 w-full" />
+      </div>
+    );
+  }
 
   if (!provider) {
     return (

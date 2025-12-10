@@ -1,16 +1,16 @@
 export interface Pharmacy {
   id: string;
   name: string;
-  chain: string;
+  chain?: string;              // Made optional to match backend
   address: string;
   city: string;
   state: string;
   zipCode: string;
   lat: number;
   lng: number;
-  phone: string;
-  hours: string;
-  distance: number;
+  phone?: string;              // Made optional to match backend
+  hours?: string;              // Made optional to match backend
+  distance?: number;           // Made optional to match backend
   is24Hour: boolean;
 }
 

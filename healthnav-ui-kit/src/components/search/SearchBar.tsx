@@ -17,7 +17,9 @@ import {
 import { Slider } from "@/components/ui/slider";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { radiusOptions, specialties } from "@/data/providers";
+import { radiusOptions } from "@/data/providers";
+import { useSpecialtiesWithFallback } from "@/lib/dataProvider";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export interface SearchFilters {
   symptom: string;
@@ -34,6 +36,7 @@ interface SearchBarProps {
 
 export function SearchBar({ filters, onFiltersChange, onSearch }: SearchBarProps) {
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
+  const { data: specialties, isLoading: specialtiesLoading } = useSpecialtiesWithFallback();
 
   const updateFilter = <K extends keyof SearchFilters>(key: K, value: SearchFilters[K]) => {
     onFiltersChange({ ...filters, [key]: value });
@@ -113,18 +116,27 @@ export function SearchBar({ filters, onFiltersChange, onSearch }: SearchBarProps
                 <div className="space-y-2">
                   <Label>Specialties</Label>
                   <div className="max-h-48 overflow-y-auto space-y-2">
-                    {specialties.map((specialty) => (
-                      <label
-                        key={specialty}
-                        className="flex items-center gap-2 text-sm cursor-pointer py-1"
-                      >
-                        <Checkbox
-                          checked={filters.specialties.includes(specialty)}
-                          onCheckedChange={() => toggleSpecialty(specialty)}
-                        />
-                        {specialty}
-                      </label>
-                    ))}
+                    {specialtiesLoading ? (
+                      [...Array(5)].map((_, i) => (
+                        <div key={i} className="flex items-center gap-2 py-1">
+                          <Skeleton className="h-4 w-4 rounded" />
+                          <Skeleton className="h-4 w-32" />
+                        </div>
+                      ))
+                    ) : (
+                      specialties.map((specialty) => (
+                        <label
+                          key={specialty}
+                          className="flex items-center gap-2 text-sm cursor-pointer py-1"
+                        >
+                          <Checkbox
+                            checked={filters.specialties.includes(specialty)}
+                            onCheckedChange={() => toggleSpecialty(specialty)}
+                          />
+                          {specialty}
+                        </label>
+                      ))
+                    )}
                   </div>
                 </div>
               </div>

@@ -64,8 +64,10 @@ Healthcare Navigator integrates heterogeneous public datasets into a unified sem
 
 - Node.js 18+
 - Python 3.9+
-- MongoDB
-- (Optional) Ontotext GraphDB
+- MongoDB (required for backend)
+- Ontotext GraphDB 10.6+ (required for backend semantic queries)
+
+**Note**: The frontend includes an automatic fallback system. If the backend is unavailable, the app will seamlessly switch to demo data, allowing you to explore the UI without a full backend setup.
 
 ### Option 1: Docker Compose (Recommended)
 
@@ -163,6 +165,239 @@ Healthcare Navigator integrates heterogeneous public datasets into a unified sem
 
 5. **Access application**: http://localhost:5173
 
+### Option 3: Full Stack with GraphDB (Complete Integration)
+
+This option sets up the complete semantic knowledge graph integration.
+
+#### Step 1: Install and Start GraphDB
+
+1. **Download Ontotext GraphDB**:
+   - Visit https://www.ontotext.com/products/graphdb/download/
+   - Download GraphDB Free (version 10.6.3 recommended)
+   - Or use Docker:
+     ```bash
+     docker run -d -p 7200:7200 ontotext/graphdb:10.6.3-free
+     ```
+
+2. **Start GraphDB**:
+   - If using standalone: Launch GraphDB Workbench
+   - Access GraphDB at http://localhost:7200
+
+3. **Create Repository**:
+   - Open GraphDB Workbench (http://localhost:7200)
+   - Click "Setup" → "Repositories"
+   - Click "Create new repository"
+   - Repository ID: `healthnav`
+   - Repository type: GraphDB Free
+   - Click "Create"
+
+#### Step 2: Start MongoDB
+
+```bash
+# macOS
+brew services start mongodb-community
+
+# Linux
+sudo systemctl start mongod
+
+# Windows
+net start MongoDB
+
+# Or with Docker
+docker run -d -p 27017:27017 --name mongodb mongo:latest
+```
+
+Verify MongoDB is running:
+```bash
+mongosh --eval "db.version()"
+```
+
+#### Step 3: Setup Backend
+
+1. **Navigate to backend directory**:
+   ```bash
+   cd backend
+   ```
+
+2. **Create and activate virtual environment**:
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # Windows: venv\Scripts\activate
+   ```
+
+3. **Install dependencies**:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. **Configure environment** (create `.env` file):
+   ```env
+   # MongoDB Configuration
+   MONGODB_URL=mongodb://localhost:27017
+   MONGODB_DB_NAME=healthnav
+
+   # GraphDB Configuration
+   GRAPHDB_URL=http://localhost:7200
+   GRAPHDB_REPOSITORY=healthnav
+
+   # CORS Settings
+   CORS_ORIGINS=["http://localhost:5173","http://localhost:8080"]
+
+   # Features
+   ENABLE_CACHING=true
+   DEFAULT_RADIUS_MILES=25
+   ```
+
+5. **Generate and load RDF data into GraphDB**:
+   ```bash
+   # Generate TTL (Turtle) files
+   python ops/generate_ttl_data.py
+
+   # Seed GraphDB repository with RDF triples
+   python ops/seed_graphdb.py
+   ```
+
+   This will create ~3,000 RDF triples including:
+   - 30 physicians with specialties
+   - 3 hospitals with HCAHPS scores
+   - 15 pharmacies
+   - 21 medical specialties
+   - Conditions and symptom relationships
+
+6. **Start the backend server**:
+   ```bash
+   python -m app.main
+   ```
+
+   Expected output:
+   ```
+   INFO:     Started server process
+   INFO:     Uvicorn running on http://0.0.0.0:8000
+   ```
+
+7. **Verify backend health**:
+   ```bash
+   curl http://localhost:8000/api/v1/health
+   ```
+
+   Expected response:
+   ```json
+   {
+     "status": "healthy",
+     "graphdb_connected": true,
+     "mongodb_connected": true
+   }
+   ```
+
+#### Step 4: Setup Frontend
+
+1. **Navigate to frontend directory** (in a new terminal):
+   ```bash
+   cd healthnav-ui-kit
+   ```
+
+2. **Install dependencies**:
+   ```bash
+   npm install
+   ```
+
+3. **Configure environment** (create `.env.local` file):
+   ```env
+   VITE_API_URL=http://localhost:8000/api/v1
+   ```
+
+4. **Start frontend development server**:
+   ```bash
+   npm run dev
+   ```
+
+   Expected output:
+   ```
+   VITE v5.4.19  ready in 292 ms
+   ➜  Local:   http://localhost:8080/
+   ```
+
+5. **Access the application**:
+   - Open http://localhost:8080 in your browser
+   - You should see a green "Connected to backend" banner (auto-hides after 3s)
+   - No "(Demo Data)" indicators should be visible
+   - All data is now coming from the GraphDB knowledge graph!
+
+#### Verification Steps
+
+1. **Check Backend Connectivity**:
+   - Open browser DevTools (F12)
+   - Go to Network tab
+   - Refresh the page
+   - Look for successful requests to:
+     - `/api/v1/health` (should return 200)
+     - `/api/v1/providers` (should return array of providers)
+     - `/api/v1/hospitals` (should return array of hospitals)
+
+2. **Verify GraphDB Integration**:
+   - Navigate to Search page
+   - Enter a symptom (e.g., "chest pain")
+   - Click Search
+   - Network tab should show `POST /api/v1/search/symptom`
+   - Results should come from SPARQL queries to GraphDB
+
+3. **Test Fallback System**:
+   - Stop the backend server (Ctrl+C in backend terminal)
+   - Refresh the frontend
+   - Banner should show "Using demo data - Backend unavailable"
+   - App continues to work with mock data
+   - Restart backend to reconnect
+
+#### Troubleshooting
+
+**GraphDB Connection Failed**:
+- Ensure GraphDB is running: http://localhost:7200
+- Verify repository `healthnav` exists in GraphDB Workbench
+- Check `.env` has correct `GRAPHDB_URL` and `GRAPHDB_REPOSITORY`
+
+**MongoDB Connection Failed**:
+- Ensure MongoDB is running: `mongosh --eval "db.version()"`
+- Check `.env` has correct `MONGODB_URL`
+
+**Frontend Shows "Using demo data"**:
+- Verify backend health endpoint returns `"status": "healthy"`
+- Check browser console for CORS errors
+- Ensure `VITE_API_URL` in `.env.local` points to http://localhost:8000/api/v1
+
+**Port Conflicts**:
+- Backend requires port 8000 (change with `--port` flag)
+- Frontend runs on 8080 or 5173 (Vite auto-selects)
+- GraphDB requires port 7200
+- MongoDB requires port 27017
+
+## Frontend Fallback System
+
+The frontend includes an intelligent fallback mechanism for offline-first development:
+
+**How It Works**:
+1. On page load, frontend attempts to connect to backend via health check
+2. If backend is available:
+   - Status banner briefly shows "Connected to backend" (green, auto-hides)
+   - All data fetched from API endpoints
+   - Real-time SPARQL queries executed on GraphDB
+3. If backend is unavailable:
+   - Status banner shows "Using demo data - Backend unavailable" (yellow)
+   - App automatically switches to mock data
+   - All features remain functional
+   - User can click "Retry" to attempt reconnection
+
+**Benefits**:
+- **No backend required** for UI development and testing
+- **Graceful degradation** when backend goes down
+- **Seamless recovery** when backend comes back online
+- **Full offline capability** with realistic demo data
+
+**Implementation**:
+- Located in `healthnav-ui-kit/src/lib/dataProvider.ts`
+- Uses React Query for caching and automatic refetching
+- Status monitoring in `healthnav-ui-kit/src/lib/hooks/useBackendStatus.ts`
+- Visual feedback via `BackendStatusBanner` component
+
 ## Project Structure
 
 ```
@@ -185,13 +420,36 @@ healthnav/
 ├── healthnav-ui-kit/            # React frontend
 │   ├── src/
 │   │   ├── components/          # UI components
-│   │   ├── pages/               # Page components
-│   │   ├── lib/                 # Utilities & API client
-│   │   ├── data/                # Type definitions
+│   │   │   ├── layout/         # Layout components (AppLayout, TopNav, etc.)
+│   │   │   ├── search/         # Search components (SearchBar, Filters, etc.)
+│   │   │   ├── providers/      # Provider components (ProviderCard, etc.)
+│   │   │   ├── map/            # MapView component
+│   │   │   ├── ui/             # shadcn/ui components
+│   │   │   └── BackendStatusBanner.tsx  # Connection status indicator
+│   │   ├── pages/              # Page components
+│   │   │   ├── Search.tsx      # Main search page
+│   │   │   ├── Providers.tsx   # All providers list
+│   │   │   ├── Hospitals.tsx   # All hospitals list
+│   │   │   ├── ProviderDetail.tsx
+│   │   │   └── HospitalDetail.tsx
+│   │   ├── lib/                # Utilities & API integration
+│   │   │   ├── api.ts          # API client (Axios)
+│   │   │   ├── config.ts       # Environment configuration
+│   │   │   ├── dataProvider.ts # API hooks with fallback logic
+│   │   │   └── hooks/
+│   │   │       ├── useApi.ts           # React Query hooks
+│   │   │       └── useBackendStatus.ts # Backend connectivity monitor
+│   │   ├── data/               # Type definitions & mock data
+│   │   │   ├── providers.ts    # Provider interface & mock
+│   │   │   ├── hospitals.ts    # Hospital interface & mock
+│   │   │   └── pharmacies.ts   # Pharmacy interface & mock
 │   │   └── App.tsx
 │   ├── package.json
-│   └── vite.config.ts
+│   ├── vite.config.ts
+│   └── .env.local              # Environment variables
 ├── HealthcareNavigator_Team4.owl # OWL ontology
+├── TESTING_CHECKLIST.md        # Comprehensive testing guide
+├── INTEGRATION.md              # Integration architecture docs
 ├── docker-compose.yml
 └── README.md
 ```
@@ -319,6 +577,35 @@ DEFAULT_RADIUS_MILES=25
 VITE_API_URL=http://localhost:8000/api/v1
 ```
 
+## Testing
+
+See **[TESTING_CHECKLIST.md](./TESTING_CHECKLIST.md)** for a comprehensive manual testing guide covering:
+
+- Frontend standalone mode (backend offline)
+- Full stack integration (backend online)
+- Backend failure and recovery scenarios
+- Error handling and edge cases
+- Data consistency with optional fields
+- Performance benchmarks
+- Browser compatibility
+- Mobile responsiveness
+- Accessibility compliance
+
+Quick test commands:
+
+```bash
+# Backend tests (if available)
+cd backend
+pytest tests/
+
+# Frontend TypeScript check
+cd healthnav-ui-kit
+npm run build  # Checks for type errors
+
+# Manual testing
+npm run dev    # Start dev server and follow checklist
+```
+
 ## Deployment
 
 ### Docker Deployment
@@ -337,6 +624,16 @@ docker-compose logs -f
 docker-compose down
 ```
 
+## Integration Architecture
+
+For detailed information about the frontend-backend integration and the fallback system, see **[INTEGRATION.md](./INTEGRATION.md)**.
+
+Key integration features:
+- Automatic API fallback to mock data
+- Real-time backend status monitoring
+- Graceful error handling
+- TypeScript type safety with optional fields
+- React Query for efficient data fetching and caching
 
 ## License
 

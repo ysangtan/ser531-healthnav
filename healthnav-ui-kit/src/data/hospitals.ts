@@ -9,10 +9,10 @@ export interface Hospital {
   hcahpsScore: number;
   lat: number;
   lng: number;
-  phone: string;
-  about: string;
+  phone?: string;              // Made optional to match backend
+  about?: string;              // Made optional to match backend
   affiliatedProviders: number;
-  bedCount: number;
+  bedCount?: number;           // Made optional to match backend
   emergencyServices: boolean;
 }
 

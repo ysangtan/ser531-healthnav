@@ -7,12 +7,12 @@ import { ProviderCard } from "@/components/providers/ProviderCard";
 import { MapView } from "@/components/map/MapView";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Button } from "@/components/ui/button";
-import { providers as allProviders } from "@/data/providers";
-import { hospitals } from "@/data/hospitals";
-import { pharmacies } from "@/data/pharmacies";
+import { Skeleton } from "@/components/ui/skeleton";
 import type { Provider } from "@/data/providers";
 import { useSaved } from "@/hooks/use-saved";
 import { cn } from "@/lib/utils";
+import { useProvidersWithFallback, useHospitalsWithFallback, usePharmaciesWithFallback } from "@/lib/dataProvider";
+import { ErrorState } from "@/components/ui/ErrorState";
 
 const defaultFilters: SearchFilters = {
   symptom: "",
@@ -29,6 +29,10 @@ export default function Search() {
   const [mobileView, setMobileView] = useState<"list" | "map">("list");
   const [isMapExpanded, setIsMapExpanded] = useState(true);
 
+  const { data: allProviders, isLoading: providersLoading, error: providersError, usingMockData } = useProvidersWithFallback();
+  const { data: hospitals } = useHospitalsWithFallback();
+  const { data: pharmacies } = usePharmaciesWithFallback();
+
   const filteredProviders = useMemo(() => {
     return allProviders.filter((provider) => {
       if (filters.symptom) {
@@ -42,17 +46,17 @@ export default function Search() {
         const matchesName = provider.name.toLowerCase().includes(symptomLower);
         if (!matchesSymptom && !matchesCondition && !matchesName) return false;
       }
-      if (provider.distance > filters.radius) return false;
+      if (provider.distance !== undefined && provider.distance > filters.radius) return false;
       if (filters.specialties.length > 0) {
         const hasMatchingSpecialty = provider.specialties.some((s) =>
           filters.specialties.includes(s)
         );
         if (!hasMatchingSpecialty) return false;
       }
-      if (provider.hcahpsScore < filters.minHcahps) return false;
+      if (provider.hcahpsScore !== undefined && provider.hcahpsScore < filters.minHcahps) return false;
       return true;
     });
-  }, [filters]);
+  }, [allProviders, filters]);
 
   const handleSearch = () => {
     const hasFilters = filters.symptom || filters.specialties.length > 0 || filters.minHcahps > 0;
@@ -141,13 +145,42 @@ export default function Search() {
           )}
         >
           <div className="p-3 sm:p-4 space-y-3">
+            {providersError && !usingMockData && (
+              <ErrorState
+                title="Failed to Load Providers"
+                message={providersError.message}
+              />
+            )}
+
             <div className="flex items-center justify-between">
               <p className="text-sm text-muted-foreground">
-                {filteredProviders.length} provider{filteredProviders.length !== 1 && "s"} found
+                {providersLoading ? (
+                  "Loading providers..."
+                ) : (
+                  <>
+                    {filteredProviders.length} provider{filteredProviders.length !== 1 && "s"} found
+                    {usingMockData && <span className="ml-2 text-xs text-yellow-600">(Demo Data)</span>}
+                  </>
+                )}
               </p>
             </div>
 
-            {filteredProviders.length > 0 ? (
+            {providersLoading ? (
+              <div className="space-y-3">
+                {[...Array(5)].map((_, i) => (
+                  <div key={i} className="rounded-lg border bg-card p-4">
+                    <div className="flex items-start gap-3">
+                      <Skeleton className="h-12 w-12 rounded-full" />
+                      <div className="flex-1 space-y-2">
+                        <Skeleton className="h-5 w-3/4" />
+                        <Skeleton className="h-4 w-1/2" />
+                        <Skeleton className="h-4 w-2/3" />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : filteredProviders.length > 0 ? (
               <div className="space-y-3">
                 {filteredProviders.map((provider) => (
                   <ProviderCard

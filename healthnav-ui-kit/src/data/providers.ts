@@ -5,16 +5,16 @@ export interface Provider {
   firstName: string;
   lastName: string;
   specialties: string[];
-  hospitalId: string;
-  hospitalName: string;
-  hcahpsScore: number;
+  hospitalId?: string;        // Made optional to match backend
+  hospitalName?: string;      // Made optional to match backend
+  hcahpsScore?: number;       // Made optional to match backend
   lat: number;
   lng: number;
-  distance: number;
+  distance?: number;          // Made optional to match backend
   conditions: string[];
   symptoms: string[];
-  phone: string;
-  address: string;
+  phone?: string;             // Made optional to match backend
+  address?: string;           // Made optional to match backend
 }
 
 export const providers: Provider[] = [
