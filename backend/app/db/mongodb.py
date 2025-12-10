@@ -135,6 +135,21 @@ class MongoDBClient:
             logger.error(f"Error getting cached pharmacies: {e}")
             return []
 
+    # Specialties Cache Methods
+    async def get_cached_specialties(self) -> List[str]:
+        """Get cached specialties."""
+        if self.db is None or not settings.ENABLE_CACHING:
+            return []
+
+        try:
+            collection = self.db.specialties_cache
+            cursor = collection.find({})
+            docs = await cursor.to_list(length=None)
+            return [doc["name"] for doc in docs if "name" in doc]
+        except Exception as e:
+            logger.error(f"Error getting cached specialties: {e}")
+            return []
+
     # Query Cache Methods
     async def cache_search_result(
         self,
