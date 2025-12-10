@@ -7,7 +7,7 @@
 
 # Hospital HCAHPS Scores
 
-:BannerUMCPhoenix :hcahpsOverallScore "75.4"^^xsd:decimal .
-:MayoClinicPhoenix :hcahpsOverallScore "78.5"^^xsd:decimal .
-:HonorHealthScottsdale :hcahpsOverallScore "77.6"^^xsd:decimal .
+:BannerUMCPhoenix :hcahpsOverallScore "79.2"^^xsd:decimal .
+:MayoClinicPhoenix :hcahpsOverallScore "86.7"^^xsd:decimal .
+:HonorHealthScottsdale :hcahpsOverallScore "81.6"^^xsd:decimal .
 
