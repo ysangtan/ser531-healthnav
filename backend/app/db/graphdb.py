@@ -23,8 +23,16 @@ class GraphDBClient:
     async def query(self, sparql_query: str) -> List[Dict[str, Any]]:
         """Execute a SPARQL query and return results."""
         try:
-            self.sparql.setQuery(sparql_query)
-            results = self.sparql.query().convert()
+            import asyncio
+
+            def _execute_query():
+                """Helper to execute synchronous SPARQL query."""
+                self.sparql.setQuery(sparql_query)
+                return self.sparql.query().convert()
+
+            # Run synchronous SPARQL query in thread pool to avoid blocking event loop
+            loop = asyncio.get_event_loop()
+            results = await loop.run_in_executor(None, _execute_query)
 
             if "results" in results and "bindings" in results["results"]:
                 return results["results"]["bindings"]
@@ -34,16 +42,22 @@ class GraphDBClient:
             raise
 
     async def test_connection(self) -> bool:
-        """Test connection to GraphDB."""
+        """Test connection to GraphDB with timeout."""
         try:
+            import asyncio
             test_query = """
             SELECT (COUNT(*) as ?count) WHERE {
                 ?s ?p ?o .
             } LIMIT 1
             """
-            await self.query(test_query)
+            # Add timeout to prevent hanging
+            await asyncio.wait_for(self.query(test_query), timeout=2.0)
             return True
-        except:
+        except asyncio.TimeoutError:
+            logger.warning("GraphDB connection test timed out")
+            return False
+        except Exception as e:
+            logger.warning(f"GraphDB connection test failed: {e}")
             return False
 
     async def search_by_symptom(
